@@ -1,0 +1,133 @@
+[4mstdio[24m(3)                                       Library Functions Manual                                      [4mstdio[24m(3)
+
+[1mNAME[0m
+       stdio - standard input/output library functions
+
+[1mLIBRARY[0m
+       Standard C library ([4mlibc[24m, [4m-lc[24m)
+
+[1mSYNOPSIS[0m
+       [1m#include <stdio.h>[0m
+
+       [1mFILE *[4m[22mstdin[24m[1m;[0m
+       [1mFILE *[4m[22mstdout[24m[1m;[0m
+       [1mFILE *[4m[22mstderr[24m[1m;[0m
+
+[1mDESCRIPTION[0m
+       The  standard  I/O library provides a simple and efficient buffered stream I/O interface.  Input and output is
+       mapped into logical data streams and the physical I/O characteristics are concealed.  The functions and macros
+       are listed below; more information is available from the individual man pages.
+
+       A stream is associated with an external file (which may be a physical device) by [4mopening[24m a file, which may in‐
+       volve creating a new file.  Creating an existing file causes its former contents to be discarded.  If  a  file
+       can support positioning requests (such as a disk file, as opposed to a terminal), then a [4mfile[24m [4mposition[24m [4mindica‐[0m
+       [4mtor[24m  associated  with the stream is positioned at the start of the file (byte zero), unless the file is opened
+       with append mode.  If append mode is used, it is unspecified whether the position indicator will be placed  at
+       the start or the end of the file.  The position indicator is maintained by subsequent reads, writes, and posi‐
+       tioning  requests.   All input occurs as if the characters were read by successive calls to the [1mfgetc[22m(3) func‐
+       tion; all output takes place as if all characters were written by successive calls to the [1mfputc[22m(3) function.
+
+       A file is disassociated from a stream by [4mclosing[24m the file.  Output streams are flushed (any  unwritten  buffer
+       contents are transferred to the host environment) before the stream is disassociated from the file.  The value
+       of a pointer to a [4mFILE[24m object is indeterminate after a file is closed (garbage).
+
+       A  file  may be subsequently reopened, by the same or another program execution, and its contents reclaimed or
+       modified (if it can be repositioned at the start).  If the main function returns to its  original  caller,  or
+       the  [1mexit[22m(3)  function is called, all open files are closed (hence all output streams are flushed) before pro‐
+       gram termination.  Other methods of program termination, such as [1mabort[22m(3) do not bother  about  closing  files
+       properly.
+
+       At  program  startup, three text streams are predefined and need not be opened explicitly: [4mstandard[24m [4minput[24m (for
+       reading conventional input), [4mstandard[24m [4moutput[24m (for writing conventional output), and [4mstandard[24m [4merror[24m (for  writ‐
+       ing  diagnostic  output).  These streams are abbreviated [4mstdin[24m, [4mstdout[24m, and [4mstderr[24m.  When opened, the standard
+       error stream is not fully buffered; the standard input and output streams are fully buffered if  and  only  if
+       the streams do not refer to an interactive device.
+
+       Output  streams  that  refer  to  terminal devices are always line buffered by default; pending output to such
+       streams is written automatically whenever an input stream that refers to a terminal device is read.  In  cases
+       where  a large amount of computation is done after printing part of a line on an output terminal, it is neces‐
+       sary to [1mfflush[22m(3) the standard output before going off and computing so that the output will appear.
+
+       The [4mstdio[24m library is a part of the library [1mlibc [22mand routines are automatically loaded as needed by [1mcc[22m(1).  The
+       SYNOPSIS sections of the following manual pages indicate which include files are to be used, what the compiler
+       declaration for the function looks like and which external variables are of interest.
+
+       The following are defined as macros; these names may not be reused without first removing their current defin‐
+       itions with [1m#undef[22m: [1mBUFSIZ[22m, [1mEOF[22m, [1mFILENAME_MAX[22m, [1mFOPEN_MAX[22m,  [1mL_cuserid[22m,  [1mL_ctermid[22m,  [1mL_tmpnam[22m,  [1mNULL[22m,  [1mSEEK_END[22m,
+       [1mSEEK_SET[22m, [1mSEEK_CUR[22m, [1mTMP_MAX[22m, [1mclearerr[22m, [1mfeof[22m, [1mferror[22m, [1mfileno[22m, [1mgetc[22m, [1mgetchar[22m, [1mputc[22m, [1mputchar[22m, [1mstderr[22m, [1mstdin[22m, [1mstd‐[0m
+       [1mout[22m.   Function  versions  of  the  macro  functions  [1mfeof[22m, [1mferror[22m, [1mclearerr[22m, [1mfileno[22m, [1mgetc[22m, [1mgetchar[22m, [1mputc[22m, and
+       [1mputchar [22mexist and will be used if the macros definitions are explicitly removed.
+
+   [1mList of functions[0m
+       [1mFunction             Description[0m
+       ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       [1mclearerr[22m(3)          check and reset stream status
+       [1mfclose[22m(3)            close a stream
+       [1mfdopen[22m(3)            stream open functions
+       [1mfeof[22m(3)              check and reset stream status
+       [1mferror[22m(3)            check and reset stream status
+       [1mfflush[22m(3)            flush a stream
+       [1mfgetc[22m(3)             get next character or word from input stream
+       [1mfgetpos[22m(3)           reposition a stream
+       [1mfgets[22m(3)             get a line from a stream
+       [1mfileno[22m(3)            return the integer descriptor of the argument stream
+       [1mfmemopen[22m(3)          open memory as stream
+       [1mfopen[22m(3)             stream open functions
+       [1mfopencookie[22m(3)       open a custom stream
+       [1mfprintf[22m(3)           formatted output conversion
+       [1mfpurge[22m(3)            flush a stream
+       [1mfputc[22m(3)             output a character or word to a stream
+       [1mfputs[22m(3)             output a line to a stream
+       [1mfread[22m(3)             binary stream input/output
+       [1mfreopen[22m(3)           stream open functions
+       [1mfscanf[22m(3)            input format conversion
+       [1mfseek[22m(3)             reposition a stream
+       [1mfsetpos[22m(3)           reposition a stream
+       [1mftell[22m(3)             reposition a stream
+       [1mfwrite[22m(3)            binary stream input/output
+       [1mgetc[22m(3)              get next character or word from input stream
+       [1mgetchar[22m(3)           get next character or word from input stream
+       [1mgets[22m(3)              get a line from a stream
+       [1mgetw[22m(3)              get next character or word from input stream
+       [1mmktemp[22m(3)            make temporary filename (unique)
+       [1mopen_memstream[22m(3)    open a dynamic memory buffer stream
+       [1mopen_wmemstream[22m(3)   open a dynamic memory buffer stream
+       [1mperror[22m(3)            system error messages
+       [1mprintf[22m(3)            formatted output conversion
+       [1mputc[22m(3)              output a character or word to a stream
+       [1mputchar[22m(3)           output a character or word to a stream
+       [1mputs[22m(3)              output a line to a stream
+       [1mputw[22m(3)              output a character or word to a stream
+       [1mremove[22m(3)            remove directory entry
+       [1mrewind[22m(3)            reposition a stream
+       [1mscanf[22m(3)             input format conversion
+       [1msetbuf[22m(3)            stream buffering operations
+       [1msetbuffer[22m(3)         stream buffering operations
+       [1msetlinebuf[22m(3)        stream buffering operations
+       [1msetvbuf[22m(3)           stream buffering operations
+       [1msprintf[22m(3)           formatted output conversion
+       [1msscanf[22m(3)            input format conversion
+       [1mstrerror[22m(3)          system error messages
+       [1msys_errlist[22m(3)       system error messages
+       [1msys_nerr[22m(3)          system error messages
+       [1mtempnam[22m(3)           temporary file routines
+       [1mtmpfile[22m(3)           temporary file routines
+       [1mtmpnam[22m(3)            temporary file routines
+       [1mungetc[22m(3)            un-get character from input stream
+       [1mvfprintf[22m(3)          formatted output conversion
+       [1mvfscanf[22m(3)           input format conversion
+       [1mvprintf[22m(3)           formatted output conversion
+       [1mvscanf[22m(3)            input format conversion
+       [1mvsprintf[22m(3)          formatted output conversion
+       [1mvsscanf[22m(3)           input format conversion
+
+[1mSTANDARDS[0m
+       C11, POSIX.1-2008.
+
+[1mHISTORY[0m
+       C89, POSIX.1-2001.
+
+[1mSEE ALSO[0m
+       [1mclose[22m(2), [1mopen[22m(2), [1mread[22m(2), [1mwrite[22m(2), [1mstdout[22m(3), [1munlocked_stdio[22m(3)
+
+Linux man-pages 6.7                                   2023-12-29                                             [4mstdio[24m(3)
